@@ -1,0 +1,38 @@
+import java.util.Scanner;
+public class Task4 {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+
+        try {
+            System.out.print("Enter a sentence: ");
+            String input = scanner.nextLine();
+
+            if (input == null || input.trim().isEmpty()) {
+                throw new IllegalArgumentException("Input cannot be null or empty.");
+            }
+
+            String[] words = input.trim().split("\\s+");
+
+            if (words.length < 2) {
+                throw new IllegalArgumentException("Sentence must contain at least two words.");
+            }
+
+            String reversed = "";
+            for (int i = words.length - 1; i >= 0; i--) {
+                reversed += words[i] + " ";
+            }
+            String upperCase = input.toUpperCase();
+            int wordCount = words.length;
+
+            // Display 
+            System.out.println("Reversed sentence: " + reversed.trim());
+            System.out.println("Uppercase sentence: " + upperCase);
+            System.out.println("Word count: " + wordCount);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+}
