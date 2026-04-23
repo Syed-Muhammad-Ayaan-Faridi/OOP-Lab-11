@@ -1,0 +1,91 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class Task6 {
+
+    public static void main(String[] args) {
+
+        Scanner scanner = new Scanner(System.in);
+        try {
+            System.out.print("Enter student full name: ");
+            String name = scanner.nextLine();
+            if (name == null || name.trim().isEmpty()) {
+                System.out.println("Error: Name cannot be empty.");
+                return;
+            }
+            System.out.print("Enter student ID: ");
+            String id = scanner.nextLine();
+            if (id == null || id.trim().isEmpty()) {
+                System.out.println("Error: ID cannot be empty.");
+                return;
+            }
+            String fileName = name.replaceAll("\\s+", "_") + ".txt";
+            File file = new File(fileName);
+            System.out.print("Enter PF Lab marks: ");
+            int pfLab = Integer.parseInt(scanner.nextLine());
+            System.out.print("Enter PF Theory marks: ");
+            int pfTheory = Integer.parseInt(scanner.nextLine());
+            ArrayList<String> courses = new ArrayList<>();
+            int totalCredits = 0;
+            if (pfLab >= 50 && pfTheory >= 50) {
+                if (totalCredits + 6 <= 15) { // 2 courses × 3 credits
+                    courses.add("OOP Lab");
+                    courses.add("OOP Theory");
+                    totalCredits += 6;
+                }
+            } else {
+                System.out.println("Student is not eligible for OOP courses.");
+            }
+            while (totalCredits < 15) {
+                System.out.print("Enter a course name (or 'stop' to stop the program): ");
+                String course = scanner.nextLine();
+                if (course.equalsIgnoreCase("stop")) break;
+                if (totalCredits + 3 > 15) {
+                    System.out.println("Cannot add course. Credit limit exceeded.");
+                    break;
+                }
+                courses.add(course);
+                totalCredits += 3;
+            }
+
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+
+            writer.write("Student Name: " + name);
+            writer.newLine();
+            writer.write("Student ID: " + id);
+            writer.newLine();
+            writer.write("PF Lab Marks: " + pfLab);
+            writer.newLine();
+            writer.write("PF Theory Marks: " + pfTheory);
+            writer.newLine();
+
+            writer.write("Registered Courses:");
+            writer.newLine();
+            for (String c : courses) {
+                writer.write("- " + c);
+                writer.newLine();
+            }
+
+            writer.write("Total Credit Hours: " + totalCredits);
+            writer.newLine();
+            writer.close();
+            
+            System.out.println("\nData written to file successfully.");
+
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line;
+
+            System.out.println("\nStudent Record");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            reader.close();
+
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Invalid number input.");
+        } catch (IOException e) {
+            System.out.println("Error handling file: " + e.getMessage());
+        }
+    }
+}
